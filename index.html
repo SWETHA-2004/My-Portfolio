@@ -1,0 +1,767 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Swetha Sirikonda — Portfolio</title>
+  <link rel="icon" type="image/png" href="assets/Siri.jpg">
+
+  <!-- Tailwind utilities (optional) -->
+  <script>window.tailwind = { config: { darkMode: 'class' } }</script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- AOS (animations on scroll) -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    /* ===========================
+       THEME VARIABLES (PROFESSIONAL BLUE/INDIGO)
+       =========================== */
+    :root{
+      --dark-bg-1: #071028;
+      --dark-bg-2: #102040;
+      --accent-blue: #2563eb;     /* primary */
+      --accent-indigo: #4f46e5;   /* secondary */
+      --muted-light: rgba(230,238,249,0.85);
+      --glass-light: rgba(255,255,255,0.02);
+      --glass-border: rgba(255,255,255,0.04);
+      --skill-glow: rgba(37,99,235,0.55);
+    }
+
+    /* ===========================
+       BASE / DARK MODE (default)
+       =========================== */
+    html { scroll-behavior: smooth; scroll-padding-top: 96px; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: var(--muted-light);
+      background:
+        radial-gradient(circle at 8% 18%, rgba(56,189,248,0.035), transparent 12%),
+        radial-gradient(circle at 82% 72%, rgba(124,58,237,0.035), transparent 16%),
+        linear-gradient(120deg, var(--dark-bg-1) 0%, var(--dark-bg-2) 45%, #2b0f5a 100%);
+      min-height: 100vh;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x: hidden;
+    }
+
+    /* aurora overlay */
+    .bg-aurora {
+      position: fixed; inset: 0; z-index: -5;
+      background:
+        radial-gradient(circle at 18% 22%, rgba(124,58,237,0.06), transparent 32%),
+        radial-gradient(circle at 84% 66%, rgba(56,189,248,0.06), transparent 34%);
+      filter: blur(40px);
+      animation: auroraShift 22s ease-in-out infinite alternate;
+      pointer-events:none;
+    }
+    @keyframes auroraShift { 0%{ transform: translateY(0) } 100%{ transform: translateY(-90px) } }
+
+    /* NAV */
+    header { position: fixed; left:0; right:0; top:16px; z-index:60; }
+    .nav-wrap { max-width:1100px; margin:0 auto; padding:0 1rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+    .brand { font-weight:800; color: #A5F3FC; letter-spacing: .6px; }
+    nav.desktop { display:flex; gap:1rem; align-items:center; }
+    nav.desktop a { color: rgba(236,240,255,0.9); text-decoration:none; padding:.4rem .6rem; border-radius:8px; font-weight:600; }
+    nav.desktop a:hover { color: var(--accent-blue); background: rgba(255,255,255,0.03); }
+    .hamburger { display:none; background: rgba(255,255,255,0.04); border-radius:8px; padding:.4rem; border:none; color:inherit; }
+    @media (max-width:900px) { .hamburger { display:inline-flex; } nav.desktop { display:none; } }
+
+    /* HERO */
+    .hero { padding: 5.6rem 0 4.5rem; border-bottom: 1px solid rgba(255,255,255,0.03); }
+    .neon-title { color: #fff; font-weight:900; font-size: clamp(2.2rem, 4vw, 3.6rem); text-shadow: 0 6px 30px rgba(59,130,246,0.06); }
+    .subline { color: rgba(230,238,249,0.9); margin-top: .6rem; }
+
+    .hero-img { width:300px; height:300px; border-radius:999px; object-fit:cover; border:8px solid rgba(255,255,255,0.06); box-shadow:0 12px 60px rgba(59,130,246,0.12); }
+
+    .typewriter-caret { display:inline-block; width:2px; height:1.05em; background:var(--accent-blue); margin-left:6px; animation: blink 1s steps(2) infinite; vertical-align:bottom; }
+    @keyframes blink { 50% { opacity:0; } }
+
+    /* GLASS CARDS, BUTTONS */
+    .glass {
+      background: linear-gradient(180deg, var(--glass-light), rgba(255,255,255,0.01));
+      border-radius: 12px;
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    .btn {
+      display:inline-block; padding:.48rem .9rem; border-radius:10px; font-weight:700; text-decoration:none; cursor:pointer;
+      transition: all .28s ease; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.04); color: #fff;
+    }
+
+    /* Professional Blue/Indigo hover (replaces rainbow) */
+    .btn:hover,
+    .proj-icon:hover,
+    .rainbow-tag:hover,
+    .skill-tag:hover,
+    .what-card:hover {
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-indigo));
+      transform: translateY(-6px);
+      box-shadow: 0 12px 32px rgba(37,99,235,0.35);
+      color: #fff !important;
+    }
+
+    /* PROJECT CARDS */
+    .project-card {
+      border-radius:14px; overflow:visible; transform-style: preserve-3d;
+      transition: transform .35s cubic-bezier(.22,.9,.15,1), box-shadow .35s ease;
+      z-index:1;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+    }
+    .project-card .media { height: 180px; overflow:hidden; border-top-left-radius:12px; border-top-right-radius:12px; }
+    .project-card img { width:100%; height:100%; object-fit:cover; display:block; transition: transform .6s ease; }
+    .project-card:hover img { transform: scale(1.06) rotate(-0.6deg); }
+    .project-card .content { padding:1rem; position:relative; z-index:2; }
+    .project-card h4 { font-weight:700; color:#fff; margin-bottom:.3rem; }
+
+    /* CERTIFICATES (old blue style preserved) */
+    .cert-grid { display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); }
+    .cert-box {
+      border-radius:12px; padding:1.2rem; min-height:170px; display:flex; flex-direction:column; justify-content:space-between;
+      color:white;
+      background: linear-gradient(180deg,#0369a1 0%, #0ea5ff 100%);
+      box-shadow: 0 8px 28px rgba(3,105,161,0.25);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .cert-box:hover { transform: translateY(-8px); box-shadow: 0 18px 45px rgba(3,105,161,0.35); }
+    .cert-box h4 { margin-top:.6rem; font-weight:700; font-size:1.05rem; }
+    .cert-box p { opacity:.95; margin-top:.35rem; }
+
+    /* EDUCATION */
+    .education-list { display:flex; flex-direction:column; gap:.8rem; }
+    .education-card { padding:1rem; border-radius:12px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.04); }
+
+    /* TAGS & SKILLS (professional) */
+    .rainbow-tag, .skill-tag {
+      display:inline-block;
+      padding: .45rem .9rem;
+      border-radius: 10px;
+      font-weight:700;
+      background: rgba(37,99,235,0.12);
+      border: 1px solid rgba(37,99,235,0.22);
+      color: white;
+      transition: all .32s ease;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    }
+
+    .rainbow-tag:hover, .skill-tag:hover {
+      /* handled by global hover above */
+      color: #fff !important;
+    }
+
+    /* WHAT I DO */
+    .what-card { transition: all .28s ease; }
+    .what-card:hover { /* handled above for gradient */ color: #fff !important; }
+
+    /* SKILL ICONS (floating + hover glow) */
+    .skill-big {
+      width:75px;
+      height:75px;
+      object-fit:contain;
+      transition: transform .35s ease, filter .35s ease;
+      cursor: pointer;
+      display:inline-block;
+      border-radius:12px;
+      padding:6px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.03);
+      animation: floatSkill 4.5s ease-in-out infinite;
+    }
+    @keyframes floatSkill {
+      0% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-8px) scale(1.02); }
+      100% { transform: translateY(0) scale(1); }
+    }
+    .skill-big:hover {
+      transform: translateY(-12px) scale(1.18);
+      filter: drop-shadow(0 0 20px var(--skill-glow));
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.12);
+    }
+    .skill-grid > *:nth-child(3n+1) { animation-duration: 4.2s; }
+    .skill-grid > *:nth-child(3n+2) { animation-duration: 4.8s; }
+    .skill-grid > *:nth-child(3n+3) { animation-duration: 5.2s; }
+
+    /* CONTACT link */
+    .contact-link { transition: transform .35s ease, box-shadow .35s ease, background .28s ease; display:inline-flex; align-items:center; justify-content:center; }
+    .contact-link:hover { transform: translateY(-6px) scale(1.06); box-shadow: 0 0 18px rgba(37,99,235,0.45); }
+
+    /* PROJECT ICON BUTTONS */
+    .proj-icon {
+      width: 44px;
+      height: 44px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:22px;
+      border-radius:10px;
+      background: rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      transition: all .35s ease;
+      cursor:pointer;
+    }
+    .proj-icon i { color:#fff !important; }
+
+    /* LIGHT MODE adjustments — keep background SAME, only colors for elements change */
+    /* LIGHT MODE — full white background */
+html.light body {
+  background: #ffffff !important;
+  color: #000 !important;
+}
+
+/* remove purple aurora effect in light mode */
+html.light .bg-aurora {
+  display: none !important;
+}
+
+/* keep all text black */
+html.light h1,
+html.light h2,
+html.light h3,
+html.light h4,
+html.light h5,
+html.light p,
+html.light a,
+html.light span,
+html.light li {
+  color: #000 !important;
+}
+/* FIX — Make Send Message button text black in light mode */
+html.light .btn {
+  color: #000 !important;
+  border-color: rgba(0,0,0,0.15) !important;
+  background: rgba(0,0,0,0.05) !important;
+}
+
+
+
+    /* force basic text elements black in light mode */
+    html.light h1, html.light h2, html.light h3, html.light h4, html.light h5, html.light p, html.light a, html.light span, html.light li {
+      color: #000 !important;
+    }
+
+    /* nav */
+    html.light .brand { color: var(--accent-blue) !important; }
+    html.light nav.desktop a { color: #000 !important; }
+    html.light nav.desktop a:hover { background: rgba(0,0,0,0.06); color: var(--accent-blue) !important; }
+
+    /* glass cards in light: keep white backgrounds but subtle */
+    html.light .glass {
+      background: #ffffff !important;
+      border: 1px solid rgba(0,0,0,0.08) !important;
+      color: #000 !important;
+    }
+
+    /* tags & skills in light mode become dark-text on soft blue bg */
+    html.light .rainbow-tag, html.light .skill-tag {
+      background: rgba(37,99,235,0.12) !important;
+      color: #000 !important;
+      border-color: rgba(37,99,235,0.22) !important;
+    }
+    html.light .rainbow-tag:hover, html.light .skill-tag:hover { color: #000 !important; box-shadow: 0 10px 30px rgba(37,99,235,0.12); }
+
+    /* what-card hover in light mode keeps text black */
+    html.light .what-card:hover { color: #000 !important; }
+
+    /* project card in light */
+    html.light .project-card { background: #fafafa !important; border-color: rgba(0,0,0,0.08) !important; }
+    html.light .project-card h4, html.light .project-card p { color: #000 !important; }
+
+    /* project icons in light mode: keep icons black */
+    html.light .proj-icon i { color:#000 !important; }
+
+    /* footer in light */
+    html.light footer { background: #ffffff !important; color: #000 !important; }
+    html.light #footerContent { color:#000 !important; }
+
+    /* inputs in light */
+    html.light textarea, html.light input { color: #000 !important; background: rgba(0,0,0,0.02) !important; }
+
+    /* responsive */
+    @media (max-width:900px) {
+      .hero-img { width:220px; height:220px; }
+      .skill-big { width:64px; height:64px; }
+    }
+
+    /* keep transitions smooth but reduce for reduced-motion */
+    @media (prefers-reduced-motion: reduce) {
+      .skill-big, .project-card, .btn, .proj-icon { transition: none !important; animation: none !important; }
+      .bg-aurora { animation: none !important; }
+    }
+    /* ============================
+   FULL MOBILE RESPONSIVENESS FIX (SWETHA VERSION)
+   ============================ */
+
+/* Make hero section readable on small screens */
+@media (max-width: 600px) {
+  .hero {
+    padding: 3.5rem 0 2.5rem;
+    text-align: center;
+  }
+  .hero-img {
+    width: 180px !important;
+    height: 180px !important;
+    margin-top: 1rem;
+  }
+}
+
+/* Fix text resizing for mobile */
+@media (max-width: 600px) {
+  h1.neon-title {
+    font-size: 1.9rem !important;
+  }
+  h2.subline {
+    font-size: 1rem !important;
+  }
+}
+
+/* Skills responsiveness */
+@media (max-width: 600px) {
+  .skill-grid {
+    justify-content: center;
+  }
+  .skill-big {
+    width: 60px !important;
+    height: 60px !important;
+  }
+}
+
+/* Projects grid fix */
+@media (max-width: 600px) {
+  .projects-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .project-card {
+    width: 100%;
+  }
+}
+
+/* Certificates grid fix */
+@media (max-width: 600px) {
+  .cert-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Contact section fix */
+@media (max-width: 600px) {
+  #contact > div {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Footer mobile spacing */
+@media (max-width: 600px) {
+  footer {
+    padding: 1.4rem 1rem !important;
+  }
+}
+
+/* Mobile menu animation */
+#mobileNav {
+  transition: all .35s ease;
+}
+
+  </style>
+</head>
+<body>
+  <!-- aurora overlay -->
+  <div class="bg-aurora" aria-hidden="true"></div>
+
+  <!-- HEADER -->
+  <header data-aos="zoom-in">
+    <div class="nav-wrap">
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <button id="hamburger" class="hamburger" aria-label="Open menu">☰</button>
+        <a class="brand">SWETHA SIRIKONDA</a>
+      </div>
+
+      <nav class="desktop" id="desktopNav">
+        <a href="#about">About</a>
+        <a href="#whatido">What I Do</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#certificates">Certificates</a>
+        <a href="#education">Education</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div style="display:flex;gap:.6rem;align-items:center;">
+        <button id="themeToggle" class="btn" title="Toggle theme">🌙</button>
+      </div>
+    </div>
+
+    <!-- mobile nav -->
+    <div id="mobileNav" style="display:none; max-width:1100px; margin:0 auto; padding:0 1rem; margin-top:.6rem;">
+      <div class="glass" style="padding:1rem; border-radius:12px;">
+        <a class="mobile-link" href="#about" style="display:block;padding:.5rem 0;">About</a>
+        <a class="mobile-link" href="#whatido" style="display:block;padding:.5rem 0;">What I Do</a>
+        <a class="mobile-link" href="#skills" style="display:block;padding:.5rem 0;">Skills</a>
+        <a class="mobile-link" href="#projects" style="display:block;padding:.5rem 0;">Projects</a>
+        <a class="mobile-link" href="#certificates" style="display:block;padding:.5rem 0;">Certificates</a>
+        <a class="mobile-link" href="#education" style="display:block;padding:.5rem 0;">Education</a>
+        <a class="mobile-link" href="#contact" style="display:block;padding:.5rem 0;">Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main style="padding-top:118px;">
+
+    <!-- HERO -->
+    <section class="hero" data-aos="zoom-in">
+      <div style="max-width:1100px;margin:0 auto;padding:0 1rem; display:flex;gap:2rem;align-items:center;flex-wrap:wrap;">
+        <div style="flex:1;min-width:320px;">
+          <p style="text-transform:uppercase;font-size:.85rem;letter-spacing:.18em;opacity:.8;">Hello there! I'm</p>
+          <h1 class="neon-title">Swetha Sirikonda</h1>
+          <h2 class="subline" id="typewriterLine"><span id="typewriterText"></span><span class="typewriter-caret"></span></h2>
+          <p style="margin-top:1rem;max-width:48ch;">Passionate full-stack developer — building reliable systems, crisp user interfaces and resilient backends.</p>
+
+          <div style="margin-top:1.2rem;display:flex;gap:.75rem;flex-wrap:wrap;">
+            <a href="#contact" class="btn">Hire Me</a>
+            <a href="assets/Swetha_resume1.pdf" class="btn" target="_blank">Download Resume</a>
+          </div>
+        </div>
+
+        <div>
+          <img src="assets/Siri.jpg" alt="Swetha" class="hero-img">
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" style="max-width:1100px;margin:0 auto;padding:2.2rem 1rem;">
+      <h3 style="font-size:1.5rem;margin-bottom:1rem;" data-aos="zoom-in">About Me</h3>
+
+      <p style="max-width:70ch;line-height:1.6;" data-aos="zoom-in">
+        I'm a dedicated Full-Stack Developer specializing in Java, Spring, React, and database-driven systems.
+        I love building robust backend logic and clean, modern user interfaces.
+      </p>
+
+      <div style="margin-top:1.4rem;display:flex;flex-wrap:wrap;gap:.7rem;" data-aos="zoom-in">
+        <span class="rainbow-tag">Full Stack Developer</span>
+        <span class="rainbow-tag">Java Developer</span>
+        <span class="rainbow-tag">Spring Core</span>
+        <span class="rainbow-tag">React UI Designer</span>
+        <span class="rainbow-tag">MongoDB Handling</span>
+        <span class="rainbow-tag">REST API Builder</span>
+      </div>
+    </section>
+
+    <!-- WHAT I DO -->
+    <section id="whatido" style="max-width:1100px;margin:0 auto;padding:2rem 1rem;">
+      <h3 style="font-size:1.4rem;margin-bottom:1rem;" data-aos="zoom-in">What I Do</h3>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;">
+        <div class="glass what-card" style="padding:1rem;" data-aos="zoom-in">
+          <strong>Backend Development</strong>
+          <p style="margin-top:.5rem;">Java apps • File DB • REST APIs • Server-side logic.</p>
+        </div>
+
+        <div class="glass what-card" style="padding:1rem;" data-aos="zoom-in">
+          <strong>Frontend Development</strong>
+          <p style="margin-top:.5rem;">HTML • CSS • JavaScript • React UI components.</p>
+        </div>
+
+        <div class="glass what-card" style="padding:1rem;" data-aos="zoom-in">
+          <strong>Databases</strong>
+          <p style="margin-top:.5rem;">MongoDB • SQL • Oracle DB • File-based storage.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS (BIG LOGOS) -->
+    <section id="skills" style="max-width:1100px;margin:0 auto;padding:2.5rem 1rem;">
+      <h3 style="font-size:1.5rem;margin-bottom:1.4rem;" data-aos="zoom-in">Technical Skills</h3>
+
+      <div class="skill-grid" style="display:flex;flex-wrap:wrap;gap:1.4rem;align-items:center;" data-aos="zoom-in">
+        <!-- Java FIRST -->
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg"
+             alt="Java" class="skill-big" title="Java">
+
+        <!-- React SECOND -->
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+             alt="React" class="skill-big" title="React">
+
+        <!-- HTML -->
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg"
+             alt="HTML5" class="skill-big" title="HTML5">
+
+        <!-- CSS -->
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg"
+             alt="CSS3" class="skill-big" title="CSS3">
+
+        <!-- JavaScript -->
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+             alt="JavaScript" class="skill-big" title="JavaScript">
+
+        <!-- MongoDB -->
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"
+             alt="MongoDB" class="skill-big" title="MongoDB">
+
+        <!-- MySQL -->
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg"
+             alt="MySQL" class="skill-big" title="MySQL">
+
+        <!-- Oracle -->
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/oracle/oracle-original.svg"
+             alt="Oracle" class="skill-big" title="Oracle">
+
+        <!-- JDBC (represented with Java icon) -->
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg"
+             alt="JDBC" class="skill-big" title="JDBC">
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" style="max-width:1100px;margin:0 auto;padding:2rem 1rem;">
+      <h3 style="font-size:1.4rem;margin-bottom:.8rem;" data-aos="zoom-in">Projects</h3>
+
+      <div class="projects-grid" style="margin-top:1rem;display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;">
+
+        <!-- Project 1 -->
+        <article class="project-card" data-tilt data-aos="zoom-in">
+          <div class="media"><img src="assets/cc.jpg" alt="Currency Converter"></div>
+          <div class="content">
+            <h4>Currency Converter</h4>
+            <p>Java-based currency converter with accurate calculations and clean UI.</p>
+
+            <div style="margin-top:.8rem; display:flex; gap:.8rem;">
+              <a href="https://github.com/SWETHA-2004/CurrencyConvertor" class="proj-icon" target="_blank" title="GitHub Repo">
+                <i class="fab fa-github"></i>
+              </a>
+
+              <a href="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7395056350860361728?compact=1"
+                 class="proj-icon" target="_blank" title="LinkedIn Post">
+                <i class="fab fa-linkedin"></i>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 2 -->
+        <article class="project-card" data-tilt data-aos="zoom-in">
+          <div class="media"><img src="assets/eps.jpg" alt="Payroll System"></div>
+          <div class="content">
+            <h4>Employee Payroll System</h4>
+            <p>File-based payroll system (Java) — salary calc & records.</p>
+
+            <div style="margin-top:.8rem; display:flex; gap:.8rem;">
+              <a href="https://github.com/SWETHA-2004/Employee-Pay-Roll-System" class="proj-icon" target="_blank" title="GitHub Repo">
+                <i class="fab fa-github"></i>
+              </a>
+
+              <a href="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7390732853447344128?compact=1"
+                 class="proj-icon" target="_blank" title="LinkedIn Demo">
+                <i class="fab fa-linkedin"></i>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 3 -->
+        <article class="project-card" data-tilt data-aos="zoom-in">
+          <div class="media"><img src="assets/sas.jpg" alt="SAS POS"></div>
+          <div class="content"><h4>SAS Supermarket (POS)</h4><p>Billing, stock management & PDF invoice generation system.</p></div>
+        </article>
+
+        <!-- Project 4 -->
+        <article class="project-card" data-tilt data-aos="zoom-in">
+          <div class="media"><img src="assets/bd.jpg" alt="Blockchain Healthcare"></div>
+          <div class="content"><h4>Blockchain Healthcare Security</h4><p>Prototype for blockchain-driven secure healthcare records.</p></div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- CERTIFICATES -->
+    <section id="certificates" style="max-width:1100px;margin:0 auto;padding:2rem 1rem;">
+      <h3 style="font-size:1.4rem;margin-bottom:1rem;text-align:center;" data-aos="zoom-in">My Certificates</h3>
+
+      <div class="cert-grid">
+        <div class="cert-box" data-aos="zoom-in">
+          <div><div style="font-size:1.6rem;"><i class="fa-solid fa-certificate"></i></div><h4>Industrial Training Certificate</h4><p>Placemantra — March–May 2025</p></div>
+          <a class="btn" href="certificates/INDUSTRIAL TRAINING CERTIFICATE @Sirikonda Swetha.pdf" target="_blank">Show Credentials</a>
+        </div>
+
+        <div class="cert-box" data-aos="zoom-in">
+          <div><div style="font-size:1.6rem;"><i class="fa-solid fa-certificate"></i></div><h4>Internship Certificate</h4><p>Placemantra — Web Development</p></div>
+          <a class="btn" href="certificates/INTERNSHIP CERTIFICATE @Sirikonda Swetha.pdf" target="_blank">Show Credentials</a>
+        </div>
+
+        <div class="cert-box" data-aos="zoom-in">
+          <div><div style="font-size:1.6rem;"><i class="fa-solid fa-shield-halved"></i></div><h4>Cyber Security Job Simulation</h4><p>Deloitte — Forage · Aug 2025</p></div>
+          <a class="btn" href="certificates/cyber deloitte certification.pdf" target="_blank">Show Credentials</a>
+        </div>
+
+        <div class="cert-box" data-aos="zoom-in">
+          <div><div style="font-size:1.6rem;"><i class="fa-solid fa-chart-line"></i></div><h4>Data Analytics Job Simulation</h4><p>Deloitte — Forage · Aug 2025</p></div>
+          <a class="btn" href="certificates/deloitte dataanalytics certificate.pdf" target="_blank">Show Credentials</a>
+        </div>
+
+        <div class="cert-box" data-aos="zoom-in">
+          <div><div style="font-size:1.6rem;"><i class="fa-solid fa-trophy"></i></div><h4>Young Turks Achievement</h4><p>Score: 94.01 · Sep 2025</p></div>
+          <a class="btn" href="certificates/young_turks25_round_1_achievement.pdf" target="_blank">Show Credentials</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education" style="max-width:1100px;margin:0 auto;padding:2rem 1rem;">
+      <h3 style="font-size:1.4rem;margin-bottom:1rem;" data-aos="zoom-in">Education</h3>
+
+      <div class="education-list">
+        <div class="glass education-card" data-aos="zoom-in">
+          <strong>B.Tech — Computer Science — CGPA 8.39</strong><br>Christu Jyothi Institute Of Technology and Science<br>Jangaon, Telangana
+        </div>
+
+        <div class="glass education-card" data-aos="zoom-in">
+          <strong>MPC — Intermediate — 85%</strong><br>Higher Secondary Education<br>Model College, Jangaon, Telangana
+        </div>
+
+        <div class="glass education-card" data-aos="zoom-in">
+          <strong>10th — 10 GPA</strong><br>Secondary School Education<br>Model School, Jangaon, Telangana
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" style="max-width:1100px;margin:0 auto;padding:2rem 1rem 3rem;">
+      <h3 style="font-size:1.4rem;margin-bottom:1rem;" data-aos="zoom-in">Contact</h3>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+        <div class="glass" style="padding:1rem;" data-aos="zoom-in">
+          <h4 style="font-weight:700;">Let's work together</h4>
+          <p style="margin-top:.6rem;">Email: <a href="mailto:sirikondaswetha09@gmail.com">sirikondaswetha09@gmail.com</a></p>
+          <p style="margin-top:.4rem;">Location: Jangaon, Telangana</p>
+
+          <div style="margin-top:1rem;display:flex;gap:1rem;">
+            <a href="https://www.linkedin.com/in/sirikonda-swetha-653018273" class="btn contact-link" target="_blank" title="LinkedIn">
+              <i class="fab fa-linkedin"></i>
+            </a>
+
+            <a href="https://github.com/SWETHA-2004" class="btn contact-link" target="_blank" title="GitHub">
+              <i class="fab fa-github"></i>
+            </a>
+
+           <a href="mailto:sirikondaswetha09@gmail.com" class="btn contact-link" title="Send Email">
+              <i class="fa-solid fa-envelope"></i>
+            </a>
+
+          </div>
+        </div>
+
+        <form class="glass" style="padding:1rem;" onsubmit="event.preventDefault(); alert('Form sending is not configured — Add Netlify or Formspree.');" data-aos="zoom-in">
+          <input required placeholder="Full Name" style="width:100%;padding:.6rem;margin-bottom:.5rem;border-radius:8px;border:1px solid rgba(0,0,0,0.06);">
+          <input required placeholder="Email Address" style="width:100%;padding:.6rem;margin-bottom:.5rem;border-radius:8px;border:1px solid rgba(0,0,0,0.06);">
+          <textarea placeholder="Message" rows="5" style="width:100%;padding:.6rem;border-radius:8px;border:1px solid rgba(0,0,0,0.06);"></textarea>
+          <div style="margin-top:.8rem;">
+            <button class="btn" type="submit">Send Message</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer style="padding:2.4rem 1rem;text-align:center;background:transparent;">
+      <div style="max-width:1100px;margin:0 auto;">
+        <div id="footerContent" style="color:rgba(230,238,249,0.9);">© 2025 Swetha Sirikonda — Built with passion</div>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- AOS Library -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <script>
+    /* ===========================
+        INIT: AOS
+       =========================== */
+    AOS.init({ duration:700, once:true, easing:'ease-out-cubic' });
+
+    /* MOBILE NAV */
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobileNav');
+    hamburger?.addEventListener('click', () => {
+      if (!mobileNav) return;
+      mobileNav.style.display = (mobileNav.style.display === 'block') ? 'none' : 'block';
+    });
+    document.querySelectorAll('.mobile-link').forEach(link => link.addEventListener('click', () => { if (mobileNav) mobileNav.style.display = 'none'; }));
+
+    /* THEME TOGGLE (works, persists to localStorage) */
+    const themeToggle = document.getElementById('themeToggle');
+    const htmlEl = document.documentElement;
+    const footerContent = document.getElementById('footerContent');
+    const savedTheme = localStorage.getItem('site-theme');
+
+    if (savedTheme === 'light') {
+      htmlEl.classList.add('light');
+      if (themeToggle) themeToggle.textContent = '☀️';
+      if (footerContent) footerContent.style.color = '#000';
+      const ft = document.querySelector('footer'); if (ft) ft.style.background = '#ffffff';
+    } else {
+      htmlEl.classList.remove('light');
+      if (themeToggle) themeToggle.textContent = '🌙';
+      if (footerContent) footerContent.style.color = 'rgba(230,238,249,0.9)';
+      const ft = document.querySelector('footer'); if (ft) ft.style.background = 'transparent';
+    }
+
+    themeToggle?.addEventListener('click', () => {
+      const isLight = htmlEl.classList.toggle('light');
+      themeToggle.textContent = isLight ? '☀️' : '🌙';
+      localStorage.setItem('site-theme', isLight ? 'light' : 'dark');
+      if (isLight) {
+        if (footerContent) footerContent.style.color = '#000';
+        const ft = document.querySelector('footer'); if (ft) ft.style.background = '#ffffff';
+      } else {
+        if (footerContent) footerContent.style.color = 'rgba(230,238,249,0.9)';
+        const ft = document.querySelector('footer'); if (ft) ft.style.background = 'transparent';
+      }
+    });
+
+    /* TYPEWRITER */
+    const phrases = ['Full Stack Developer','Java • React • MongoDB','File DB • Payroll • POS'];
+    const typeEl = document.getElementById('typewriterText');
+    let pi = 0, ci = 0, forward = true;
+    function stepType() {
+      const text = phrases[pi];
+      if (forward) {
+        ci++; typeEl.textContent = text.slice(0,ci);
+        if (ci === text.length) { forward=false; setTimeout(stepType,1100); return; }
+      } else {
+        ci--; typeEl.textContent = text.slice(0,ci);
+        if (ci === 0) { forward=true; pi = (pi+1)%phrases.length; }
+      }
+      setTimeout(stepType, forward ? 70 : 35);
+    }
+    stepType();
+
+    /* TILT EFFECT */
+    document.querySelectorAll('[data-tilt]').forEach(card => {
+      card.addEventListener('pointermove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        const rotateX = y * -10; const rotateY = x * 10;
+        card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+      card.addEventListener('pointerleave', () => { card.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg)'; });
+    });
+
+    /* Reduced motion support */
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.querySelectorAll('.project-card').forEach(c => c.style.transition = 'none');
+      document.querySelectorAll('.bg-aurora').forEach(bg => bg.style.animation = 'none');
+      document.querySelectorAll('.skill-big').forEach(s => s.style.animation = 'none');
+    }
+  </script>
+</body>
+</html>
